@@ -31,6 +31,8 @@ public class Team
     public double EnergyMultiplier { get; private set; }  // Multiplicador de energia
     
     public double Instability { get; set; } = 0; // Instabilidade vinda do Clube
+    public double CoachPressure { get; set; } = 0; // Pressão do Técnico vinda do Clube
+    public double TacticalFit { get; private set; } = 100; // Compatibilidade com o técnico
 
     public Team(string name, Coach coach)
     {
@@ -114,6 +116,19 @@ public class Team
         double instabilityPenalty = 1.0 - (Instability / 500.0);
         rawEfficiency *= instabilityPenalty;
         
+        // Efeito da Pressão do Técnico (> 70 reduz eficiência)
+        if (CoachPressure > 70)
+        {
+            rawEfficiency *= 0.97; // Pequena redução de 3%
+        }
+        
+        // Efeito da FILOSOFIA TÁTICA
+        // Fit 100 -> Multiplicador 1.05
+        // Fit 50 -> Multiplicador 1.00
+        // Fit 0 -> Multiplicador 0.95
+        double fitMultiplier = 0.95 + (TacticalFit / 1000.0); // 100/1000 = 0.1 -> 0.95 + 0.1 = 1.05
+        rawEfficiency *= fitMultiplier;
+        
         // Guardar valor bruto para logs
         RawEfficiency = rawEfficiency;
         
@@ -182,7 +197,64 @@ public class Team
         {
             MatchStrength = calculatedStrength;
         }
+
+        // 6. Atualizar TacticalFit
+        CalculateTacticalFit();
     }
+
+    private void CalculateTacticalFit()
+    {
+        if (StartingEleven.Count == 0 || Coach == null)
+        {
+            TacticalFit = 50;
+            return;
+        }
+
+        // Médias do time titular
+        double avgTech = StartingEleven.Average(p => p.Technical);
+        double avgPhys = StartingEleven.Average(p => p.Physical);
+        double avgMental = StartingEleven.Average(p => p.Mental);
+        double avgAge = StartingEleven.Average(p => p.Age);
+
+        double fit = 50; // Base neutra
+
+        switch (Coach.Style)
+        {
+            case TacticalStyle.Possession:
+                // Requer Técnica e Mental
+                fit = (avgTech * 0.6) + (avgMental * 0.4);
+                break;
+                
+            case TacticalStyle.CounterAttack:
+                // Requer Físico (velocidade) e Mental (disciplina)
+                fit = (avgPhys * 0.5) + (avgMental * 0.3) + (avgTech * 0.2);
+                break;
+                
+            case TacticalStyle.HighPress:
+                // Requer Muito Físico e Juventude
+                fit = avgPhys * 0.8;
+                if (avgAge < 26) fit += 10; // Bônus Jovens
+                else if (avgAge > 29) fit -= 10; // Penalidade Veteranos
+                break;
+                
+            case TacticalStyle.Defensive:
+                // Requer Mental (Posicionamento) e Físico (Força)
+                fit = (avgMental * 0.6) + (avgPhys * 0.4);
+                break;
+                
+            case TacticalStyle.DirectPlay:
+                // Requer Físico e um pouco de Técnica (Lançamento)
+                fit = (avgPhys * 0.6) + (avgTech * 0.4);
+                break;
+        }
+
+        // Clamp
+        if (fit < 0) fit = 0;
+        if (fit > 100) fit = 100;
+        
+        TacticalFit = fit;
+    }
+
 
     public double GetAverageEnergy()
     {

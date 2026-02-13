@@ -6,7 +6,8 @@ namespace iFootManager.Core.Entities;
 public class Coach
 {
     public string Name { get; private set; }
-    public TacticalPosture PreferredStyle { get; private set; }
+    public TacticalPosture PreferredStyle { get; private set; } // Legado/Instrução
+    public TacticalStyle Style { get; private set; } // Filosofia Macro
     
     // Career Properties
     public CoachSpecialty PrimarySpecialty { get; private set; }
@@ -23,6 +24,15 @@ public class Coach
         Name = name;
         PreferredStyle = preferredStyle;
         PrimarySpecialty = primarySpecialty;
+        
+        // Inicializa Filosofia com base no Estilo Preferido (Simplificado)
+        // Ou aleatório
+        var styles = Enum.GetValues(typeof(TacticalStyle));
+        Style = (TacticalStyle)styles.GetValue(new Random().Next(styles.Length));
+        
+        // Correção de coerência básica
+        if (PreferredStyle == TacticalPosture.VeryDefensive) Style = TacticalStyle.Defensive;
+        if (PreferredStyle == TacticalPosture.AllOutAttack) Style = TacticalStyle.HighPress;
     }
     
     // Construtor legado para compatibilidade (se necessário), mas idealmente deve ser removido ou atualizado

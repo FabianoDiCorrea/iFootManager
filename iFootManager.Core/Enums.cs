@@ -10,6 +10,15 @@ public enum TacticalPosture
     AllOutAttack   // Ataque Total
 }
 
+public enum TacticalStyle
+{
+    Possession,
+    CounterAttack,
+    Defensive,
+    HighPress,
+    DirectPlay
+}
+
 public enum CoachSpecialty
 {
     OffensiveTactician,
@@ -23,6 +32,12 @@ public enum ClubSize
     Small,
     Medium,
     Large
+}
+
+public enum NewsScope
+{
+    Global,
+    League
 }
 
 // Define a posição do jogador

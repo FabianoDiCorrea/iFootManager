@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="iFootManager.App.CoachHubPage"
+             Title="Hub do Técnico"
+             BackgroundColor="{StaticResource PageBackground}">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="{StaticResource PageBackground}" Offset="0.1" />
+            <GradientStop Color="{StaticResource PageBackgroundEnd}" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <Grid RowDefinitions="Auto, *" Padding="20" RowSpacing="20">
+        
+        <!-- HEADER -->
+        <Frame Grid.Row="0" BackgroundColor="{StaticResource CardBackground}" Padding="20,15" CornerRadius="15">
+            <Grid ColumnDefinitions="Auto, *, *, *" RowDefinitions="Auto, Auto" ColumnSpacing="15">
+                <!-- COACH AVATAR -->
+                <Border Grid.Column="0" 
+                        StrokeShape="RoundRectangle 16" 
+                        HeightRequest="100" WidthRequest="100" 
+                        BackgroundColor="{StaticResource Tertiary}"
+                        StrokeThickness="2"
+                        Stroke="White"
+                        VerticalOptions="Center"
+                        Padding="5">
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Offset="4,4" Radius="8" Opacity="0.3"/>
+                    </Border.Shadow>
+                    <Image Source="coach_final.png" 
+                           Aspect="AspectFit" 
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center"/>
+                </Border>
+
+                <!-- CLUB & COMPETITION -->
+                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                    <Label x:Name="lblClubName" Text="NOME DO CLUBE" FontSize="24" FontAttributes="Bold" TextColor="White"/>
+                    <HorizontalStackLayout Spacing="5">
+                        <Label Text="🏆" FontSize="12" VerticalOptions="Center"/>
+                        <Label x:Name="lblCompetition" Text="Premier League" FontSize="14" TextColor="{StaticResource SecondaryDarkText}" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- NEXT ADVERSARY -->
+                <HorizontalStackLayout Grid.Column="2" HorizontalOptions="Center" VerticalOptions="Center" Spacing="15">
+                    <Label Text="⚽" FontSize="24" VerticalOptions="Center"/>
+                    <VerticalStackLayout VerticalOptions="Center">
+                        <Label Text="PRÓXIMO JOGO" FontSize="10" FontAttributes="Bold" TextColor="{StaticResource Primary}" HorizontalOptions="Center"/>
+                        <Label x:Name="lblNextAdversary" Text="VS ADVERSÁRIO" FontSize="16" FontAttributes="Bold" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                    <Label Text="🛡️" FontSize="24" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+
+                <!-- STATUS BUTTONS/CHIPS -->
+                <HorizontalStackLayout Grid.Column="3" HorizontalOptions="End" VerticalOptions="Center" Spacing="10">
+                    <VerticalStackLayout VerticalOptions="Center" Spacing="2">
+                         <Label x:Name="lblBalance" Text="R$ --" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource Success}" HorizontalOptions="End"/>
+                         <Label x:Name="lblRound" Text="RODADA 1" FontSize="12" TextColor="{StaticResource SecondaryDarkText}" HorizontalOptions="End"/>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Grid>
+        </Frame>
+
+        <!-- MAIN LAYOUT (3 COLUMNS) -->
+        <Grid Grid.Row="1" ColumnDefinitions="300, *, 300" ColumnSpacing="20">
+            
+            <!-- LEFT COLUMN: NEWSPAPER -->
+            <VerticalStackLayout Grid.Column="0" Spacing="10">
+                <Label Text="📰 JORNAL DO CLUBE" FontSize="16" FontAttributes="Bold" TextColor="White" Margin="0,0,0,10"/>
+                
+                <!-- NEWS TABS -->
+                <Grid ColumnDefinitions="Auto, *" HeightRequest="40" BackgroundColor="#0C1222">
+                    <Button x:Name="btnWorldNews" Text="iFoot News World" FontSize="9" Clicked="OnNewsTabClicked" 
+                            Padding="15,0"
+                            BackgroundColor="{StaticResource Primary}" TextColor="White" CornerRadius="0"/>
+                    <Button x:Name="btnLeagueNews" Grid.Column="1" Text="iFoot News - Liga" FontSize="9" Clicked="OnNewsTabClicked" 
+                            Padding="15,0"
+                            BackgroundColor="Transparent" TextColor="{StaticResource SecondaryDarkText}" CornerRadius="0"/>
+                </Grid>
+
+                <Frame Padding="10" BackgroundColor="#0C1222" BorderColor="{StaticResource Tertiary}" VerticalOptions="FillAndExpand">
+                    <ScrollView x:Name="scrollNews" HeightRequest="450">
+                        <VerticalStackLayout x:Name="stackNewsFeed" Spacing="15">
+                            <!-- Notícias entrarão aqui via code-behind -->
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </Frame>
+            </VerticalStackLayout>
+
+            <!-- CENTER COLUMN: ACTION -->
+            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="30">
+                <Frame BackgroundColor="{StaticResource CardBackground}" Padding="40" HorizontalOptions="Center" WidthRequest="400">
+                    <VerticalStackLayout Spacing="20" HorizontalOptions="Center">
+                        <Label Text="ESTÁ TUDO PRONTO?" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"/>
+                        <Label Text="Sua equipe aguarda suas instruções para entrar em campo." FontSize="14" TextColor="{StaticResource SecondaryDarkText}" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                        <Button x:Name="btnStartRound" 
+                                Text="▶ INICIAR RODADA" 
+                                Clicked="OnStartRoundClicked"
+                                BackgroundColor="{StaticResource Primary}"
+                                HeightRequest="70"
+                                CornerRadius="35"
+                                FontSize="20"
+                                FontAttributes="Bold"/>
+                    </VerticalStackLayout>
+                </Frame>
+                
+                <!-- COACH PRESSURE BAR IN HUB -->
+                <VerticalStackLayout Spacing="5" WidthRequest="300" HorizontalOptions="Center">
+                    <Label Text="PRESSÃO DA DIRETORIA" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource SecondaryDarkText}" HorizontalOptions="Center"/>
+                    <Grid HeightRequest="8">
+                        <BoxView Color="{StaticResource Tertiary}" CornerRadius="4"/>
+                        <BoxView x:Name="barCoachPressure" Color="{StaticResource Warning}" CornerRadius="4" HorizontalOptions="Start" WidthRequest="0"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+
+            <!-- RIGHT COLUMN: STATS & INFO -->
+            <VerticalStackLayout Grid.Column="2" Spacing="20">
+                <!-- STATS CARD -->
+                <Frame Padding="15">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="📊 ESTATÍSTICAS" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource Primary}"/>
+                        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto">
+                            <Label Text="Gols Prós" Grid.Row="0" Grid.Column="0" FontSize="12"/>
+                            <Label Text="12" Grid.Row="0" Grid.Column="1" FontSize="12" FontAttributes="Bold"/>
+                            <Label Text="Gols Contra" Grid.Row="1" Grid.Column="0" FontSize="12" Margin="0,5,0,0"/>
+                            <Label Text="4" Grid.Row="1" Grid.Column="1" FontSize="12" FontAttributes="Bold" Margin="0,5,0,0"/>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- FINANCE CARD -->
+                <Frame Padding="15">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="💰 FINANCEIRO" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource Success}"/>
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Folha Salarial" FontSize="10" TextColor="{StaticResource SecondaryDarkText}"/>
+                            <Label x:Name="lblWageSummary" Text="R$ --/mês" FontSize="14" FontAttributes="Bold"/>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- NEXT GAMES CARD -->
+                <Frame Padding="15">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="📅 AGENDA" FontSize="14" FontAttributes="Bold" TextColor="White"/>
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Rodada 2: Man Utd (F)" FontSize="12" TextColor="{StaticResource SecondaryDarkText}"/>
+                            <Label Text="Rodada 3: Liverpool (C)" FontSize="12" TextColor="{StaticResource SecondaryDarkText}"/>
+                            <Label Text="Rodada 4: Arsenal (F)" FontSize="12" TextColor="{StaticResource SecondaryDarkText}"/>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Frame>
+            </VerticalStackLayout>
+
+        </Grid>
+    </Grid>
+
+</ContentPage>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="iFootManager.App.RoundPage"
+             Title="Preparação da Rodada"
+             BackgroundColor="{StaticResource PageBackground}">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="{StaticResource PageBackground}" Offset="0.1" />
+            <GradientStop Color="{StaticResource PageBackgroundEnd}" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="25">
+            
+            <!-- HEADER -->
+            <Grid ColumnDefinitions="Auto, *" ColumnSpacing="20">
+                <Border StrokeShape="RoundRectangle 40" 
+                        HeightRequest="80" WidthRequest="80" 
+                        BackgroundColor="{StaticResource CardBackground}"
+                        StrokeThickness="0">
+                    <Label Text="⚽" FontSize="40" HorizontalOptions="Center" VerticalOptions="Center"/>
+                </Border>
+
+                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                    <Label x:Name="lblClubName" Text="NOME DO CLUBE" FontSize="32" FontAttributes="Bold" TextColor="White"/>
+                    <Label x:Name="lblDivision" Text="RODADA 1" FontSize="16" TextColor="{StaticResource SecondaryDarkText}"/>
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- TELA DE RODADA (LISTA DE JOGOS) -->
+            <Label Text="JOGOS DA RODADA" FontSize="18" FontAttributes="Bold" TextColor="White"/>
+            <Frame BackgroundColor="{StaticResource CardBackground}" Padding="20">
+                <VerticalStackLayout x:Name="stackFixtures" Spacing="15">
+                    <!-- Fixtures entrarão aqui -->
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- AÇÃO PRINCIPAL -->
+            <VerticalStackLayout Spacing="10" Padding="0,20">
+                <Button x:Name="btnAdvance" 
+                        Text="SIMULAR PARTIDA" 
+                        Clicked="OnAdvanceClicked"
+                        HorizontalOptions="FillAndExpand"/>
+                <Label x:Name="lblWages" Text="Custo mensal do elenco: R$ --" FontSize="12" HorizontalOptions="Center" TextColor="{StaticResource SecondaryDarkText}"/>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

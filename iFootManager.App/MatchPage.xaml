@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="iFootManager.App.MatchPage"
+             Title="Partida em Andamento"
+             BackgroundColor="{StaticResource PageBackground}">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="{StaticResource PageBackground}" Offset="0.1" />
+            <GradientStop Color="{StaticResource PageBackgroundEnd}" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <Grid RowDefinitions="Auto, Auto, *, Auto" Padding="25" RowSpacing="20">
+        
+        <!-- HEADER: COMPETIÇÃO -->
+        <VerticalStackLayout Grid.Row="0" HorizontalOptions="Center" Spacing="5">
+            <Label x:Name="lblCompetition" Text="PREMIER LEAGUE" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource Primary}" HorizontalOptions="Center"/>
+            <Label x:Name="lblRound" Text="RODADA 1" FontSize="12" TextColor="{StaticResource SecondaryDarkText}" HorizontalOptions="Center"/>
+        </VerticalStackLayout>
+
+        <!-- PLACAR CENTRAL -->
+        <Frame Grid.Row="1" BackgroundColor="{StaticResource CardBackground}" Padding="30,20" CornerRadius="15">
+            <Grid ColumnDefinitions="*, Auto, *" VerticalOptions="Center">
+                <!-- HOME -->
+                <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center" Spacing="10">
+                    <Label Text="⚽" FontSize="32" HorizontalOptions="Center"/>
+                    <Label x:Name="lblHomeTeam" Text="HOME" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                </VerticalStackLayout>
+
+                <!-- SCORE -->
+                <HorizontalStackLayout Grid.Column="1" Spacing="15" VerticalOptions="Center" Margin="30,0">
+                    <Label x:Name="lblHomeScore" Text="0" FontSize="48" FontAttributes="Bold"/>
+                    <Label Text="-" FontSize="48" FontAttributes="Bold" TextColor="{StaticResource SecondaryDarkText}"/>
+                    <Label x:Name="lblAwayScore" Text="0" FontSize="48" FontAttributes="Bold"/>
+                </HorizontalStackLayout>
+
+                <!-- AWAY -->
+                <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center" Spacing="10">
+                    <Label Text="🛡️" FontSize="32" HorizontalOptions="Center"/>
+                    <Label x:Name="lblAwayTeam" Text="AWAY" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                </VerticalStackLayout>
+            </Grid>
+        </Frame>
+
+        <!-- FEED E PROGRESSO -->
+        <VerticalStackLayout Grid.Row="2" Spacing="20">
+            <!-- BARRA DE TEMPO -->
+            <VerticalStackLayout Spacing="8">
+                <HorizontalStackLayout HorizontalOptions="End" Spacing="5">
+                    <Label x:Name="lblMinute" Text="0" FontSize="24" FontAttributes="Bold" TextColor="White"/>
+                    <Label Text="'" FontSize="24" FontAttributes="Bold" TextColor="White"/>
+                </HorizontalStackLayout>
+                <Grid HeightRequest="10">
+                    <BoxView Color="{StaticResource Tertiary}" CornerRadius="5"/>
+                    <BoxView x:Name="barMatchTime" Color="{StaticResource Primary}" CornerRadius="5" HorizontalOptions="Start" WidthRequest="0"/>
+                </Grid>
+            </VerticalStackLayout>
+
+            <!-- EVENTOS MINUTO A MINUTO -->
+            <Label Text="LANCE A LANCE" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource SecondaryDarkText}"/>
+            <Frame BackgroundColor="#0C1222" HeightRequest="300" Padding="15" BorderColor="{StaticResource Tertiary}">
+                <ScrollView x:Name="scrollEvents">
+                    <VerticalStackLayout x:Name="stackEvents" Spacing="10">
+                        <!-- Eventos entram aqui -->
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Frame>
+        </VerticalStackLayout>
+
+        <!-- BOTÃO CONTINUAR (HIDDEN UNTIL END) -->
+        <Button Grid.Row="3" x:Name="btnContinue" 
+                Text="CONTINUAR" 
+                IsVisible="False"
+                Clicked="OnContinueClicked"
+                HorizontalOptions="FillAndExpand"/>
+    </Grid>
+
+</ContentPage>
